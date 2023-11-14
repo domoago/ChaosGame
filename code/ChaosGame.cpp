@@ -14,7 +14,32 @@ int main()
     // Create a video mode object
 	VideoMode vm(1920, 1080);
 	// Create and open a window for the game
-	RenderWindow window(vm, "Timber Game!!", Style::Default);
+	RenderWindow window(vm, "Chaos Game", Style::Default);
+    sf::Font font;
+
+    if (!font.loadFromFile("./fonts/halloweennightmare/Halloween Nightmare.ttf"))
+    {
+        std::cout << "Error";
+    }
+
+    sf::Text text;
+
+    // select the font
+    text.setFont(font); // font is a sf::Font
+
+    // set the string to display
+    text.setString("Chaos Game:\nClick three points on the screen.");
+
+    // set the character size
+    text.setCharacterSize(72); // in pixels, not points!
+
+    // set the color
+    text.setFillColor(sf::Color::Red);
+
+    // set the text style
+    text.setStyle(sf::Text::Bold | sf::Text::Underlined);
+
+    // inside the main loop, between window.clear() and window.display()
 
     vector<Vector2f> vertices;
     vector<Vector2f> points;
@@ -78,6 +103,7 @@ int main()
 		****************************************
 		*/
         window.clear();
+        window.draw(text);
         for(int i = 0; i < vertices.size(); i++)
         {
             RectangleShape rect(Vector2f(10,10));

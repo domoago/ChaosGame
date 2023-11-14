@@ -28,7 +28,7 @@ int main()
     text.setFont(font); // font is a sf::Font
 
     // set the string to display
-    text.setString("Chaos Game:\nClick three points on the screen.");
+    text.setString("Chaos Game:\nClick any three points on the screen.\n");
 
     // set the character size
     text.setCharacterSize(72); // in pixels, not points!
@@ -43,7 +43,7 @@ int main()
 
     vector<Vector2f> vertices;
     vector<Vector2f> points;
-
+    std::cout << "Click any three points on the screen.\n";
 	while (window.isOpen())
 	{
         /*
@@ -66,16 +66,21 @@ int main()
                     std::cout << "the left button was pressed" << std::endl;
                     std::cout << "mouse x: " << event.mouseButton.x << std::endl;
                     std::cout << "mouse y: " << event.mouseButton.y << std::endl;
-
+                    if (vertices.size() >= 2)
+                    {
+                        text.setString("Chaos Game:\nClick any three points on the screen.\nClick again to start.\n");
+                    }
                     if(vertices.size() < 3)
                     {
                         vertices.push_back(Vector2f(event.mouseButton.x, event.mouseButton.y));
+                        std::cout << "Push back " << vertices.size() << '\n';
                     }
                     else if(points.size() == 0)
                     {
-                        ///fourth click
-                        ///push back to points vector
+                        points.push_back(Vector2f(event.mouseButton.x, event.mouseButton.y));
+                        //std::cout << "fourth point pushed";
                     }
+                    //std::cout << "Points Size: " << points.size() << '\n';
                 }
             }
         }
@@ -95,6 +100,9 @@ int main()
             ///select random vertex
             ///calculate midpoint between random vertex and the last point in the vector
             ///push back the newly generated coord.
+
+            int randomVertex = rand() % 3;
+            points.push_back({(vertices[randomVertex].x + points.back().x) / 2, (vertices[randomVertex].y + points.back().y) / 2});
         }
 
         /*
@@ -106,10 +114,17 @@ int main()
         window.draw(text);
         for(int i = 0; i < vertices.size(); i++)
         {
-            RectangleShape rect(Vector2f(10,10));
-            rect.setPosition(Vector2f(vertices[i].x, vertices[i].y));
-            rect.setFillColor(Color::Blue);
-            window.draw(rect);
+            CircleShape circ(5, 30);
+            circ.setPosition(Vector2f(vertices[i].x, vertices[i].y));
+            circ.setFillColor(Color::Blue);
+            window.draw(circ);
+        }
+        for (int i = 0; i < points.size(); i++)
+        {
+            CircleShape circ(5, 30);
+            circ.setPosition(Vector2f(points[i].x, points[i].y));
+            circ.setFillColor(Color::Red);
+            window.draw(circ);
         }
         window.display();
     }

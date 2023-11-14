@@ -15,7 +15,13 @@ int main()
 	VideoMode vm(1920, 1080);
 	// Create and open a window for the game
 	RenderWindow window(vm, "Chaos Game", Style::Default);
+
     sf::Font font;
+
+    //setting up the background
+    Texture textureBackground;
+    Sprite spriteBackground;
+    spriteBackground.setPosition(0, 0);
 
     if (!font.loadFromFile("./fonts/halloweennightmare/Halloween Nightmare.ttf"))
     {
@@ -43,6 +49,7 @@ int main()
 
     vector<Vector2f> vertices;
     vector<Vector2f> points;
+
     std::cout << "Click any three points on the screen.\n";
 	while (window.isOpen())
 	{
@@ -78,6 +85,11 @@ int main()
                     else if(points.size() == 0)
                     {
                         points.push_back(Vector2f(event.mouseButton.x, event.mouseButton.y));
+                        
+                        //loading the background after the 4th click
+                        textureBackground.loadFromFile("graphics/big_fire.png");
+                        spriteBackground.setTexture(textureBackground);
+
                         //std::cout << "fourth point pushed";
                     }
                     //std::cout << "Points Size: " << points.size() << '\n';
@@ -110,8 +122,19 @@ int main()
 		Draw
 		****************************************
 		*/
-        window.clear();
+
+        if(points.size() < 1) //black background
+            window.clear();
+        else                  //then grey background after the fourth click
+        {
+            sf::Color color(50, 50, 50);
+            window.clear(color); 
+        } 
+        
+        window.draw(spriteBackground);
+
         window.draw(text);
+
         for(int i = 0; i < vertices.size(); i++)
         {
             CircleShape circ(5, 30);
@@ -119,6 +142,7 @@ int main()
             circ.setFillColor(Color::Blue);
             window.draw(circ);
         }
+        
         for (int i = 0; i < points.size(); i++)
         {
             CircleShape circ(5, 30);

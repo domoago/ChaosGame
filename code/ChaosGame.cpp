@@ -1,3 +1,6 @@
+//Created by Richard Chao and Dominic Agoncillo
+//Created for the CISP 400 Chaos Game Project
+//----------------------------------------------//
 // Include important C++ libraries here
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
